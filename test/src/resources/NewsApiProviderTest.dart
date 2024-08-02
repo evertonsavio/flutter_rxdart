@@ -20,7 +20,7 @@ void main() {
 
     // Expect that ids is a list of integers
     expect(ids, [1, 2, 3, 4]);
-    expect(ids, isA<List<dynamic>>());
+    expect(ids, isA<List<int>>());
   });
 
   test('FetchItem returns a item model', () async {
