@@ -13,7 +13,7 @@ class Repository {
 
   Future<List<int>> fetchTopIds() {
     // TODO - implement fetchTopIds for newsDbaProvider
-    return sources[1].fetchTopIds();
+    return sources[0].fetchTopIds();
   }
 
   Future<ItemModel?> fetchItem(int id) async {

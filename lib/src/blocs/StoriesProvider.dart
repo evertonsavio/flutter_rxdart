@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'StoriesBloc.dart';
+export 'StoriesBloc.dart';
 
 class StoriesProvider extends InheritedWidget {
   final StoriesBloc bloc;
 
-  StoriesProvider({required Key super.key, required super.child})
+  StoriesProvider({super.key, required super.child})
       : bloc = StoriesBloc();
 
   static StoriesBloc of(BuildContext context) {
