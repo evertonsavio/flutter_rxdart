@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 class ItemModel {
-
   final int id;
   final bool? deleted;
   final String? type;
@@ -15,6 +14,21 @@ class ItemModel {
   final int? score;
   final String? title;
   final int? descendants;
+
+  ItemModel()
+      : id = 0,
+        deleted = false,
+        type = "",
+        by = "",
+        time = 0,
+        text = "",
+        dead = false,
+        parent = 0,
+        kids = [],
+        url = "",
+        score = 0,
+        title = "",
+        descendants = 0;
 
   ItemModel.fromJson(Map<String, dynamic> parsedJson)
       : id = parsedJson['id'],

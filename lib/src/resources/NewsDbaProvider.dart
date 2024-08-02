@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'package:flutter_fetch/src/models/ItemModel.dart';
+import 'package:flutter_fetch/src/resources/Repository.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-class NewsDbaProvider {
-
+class NewsDbaProvider implements Source, Cache {
   late Database db;
+
+  NewsDbaProvider() {
+    init();
+  }
   
   void init() async {
      Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -36,7 +40,8 @@ class NewsDbaProvider {
       );
   }
 
-  Future<ItemModel?> fetchItem(int id) async {
+  @override
+  Future<ItemModel> fetchItem(int id) async {
     final maps = await db.query(
       "Items",
       columns: null, //["title", "url", "score"]
@@ -48,10 +53,19 @@ class NewsDbaProvider {
       return ItemModel.fromDb(maps.first);
     }
 
-    return null;
+    return ItemModel();
   }
 
+  @override
+  Future<List<int>> fetchTopIds() {
+    // TODO: implement fetchTopIds
+    throw UnimplementedError();
+  }
+
+  @override
   Future<int> addItem(ItemModel item) {
     return db.insert("Items", item.toMapForDb());
   }
 }
+
+final newsDbaProvider = NewsDbaProvider();
