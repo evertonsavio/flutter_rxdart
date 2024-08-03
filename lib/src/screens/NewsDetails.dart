@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_fetch/src/models/ItemModel.dart';
 import '../blocs/CommentsProvider.dart';
+import '../widgets/Comment.dart';
 
 class NewsDetails extends StatelessWidget {
   final int itemId;
@@ -23,7 +24,7 @@ class NewsDetails extends StatelessWidget {
       stream: bloc.itemWithComments,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Text('Loading');
+          return const Text('Loading');
         }
 
         final itemFuture = snapshot.data?[itemId];
@@ -32,41 +33,41 @@ class NewsDetails extends StatelessWidget {
           future: itemFuture,
           builder: (context, itemSnapshot) {
             if (!itemSnapshot.hasData) {
-              return Text('Loading');
+              return const Text('Loading');
             }
 
-            return Text('${itemSnapshot.data?.title}');
+            return buildList(itemSnapshot.data!, snapshot.data!);
           },
         );
       },
     );
   }
 
-/*  Widget buildList(ItemModel item, Map<int, Future<ItemModel>> itemMap) {
+  Widget buildList(ItemModel item, Map<int, Future<ItemModel?>> itemMap) {
     final children = <Widget>[];
     children.add(buildTitle(item));
-    final commentsList = item.kids.map((kidId) {
+    final commentsList = item.kids?.map((kidId) {
       return Comment(itemId: kidId, itemMap: itemMap, depth: 0);
     }).toList();
-    children.addAll(commentsList);
+    children.addAll(commentsList as Iterable<Widget>);
 
     return ListView(
       children: children,
     );
-  }*/
+  }
 
-/*  Widget buildTitle(ItemModel item) {
+  Widget buildTitle(ItemModel item) {
     return Container(
-      margin: EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(10.0),
       alignment: Alignment.topCenter,
       child: Text(
-        item.title,
+        item.title ?? 'Deleted',
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 20.0,
           fontWeight: FontWeight.bold,
         ),
       ),
     );
-  }*/
+  }
 }
