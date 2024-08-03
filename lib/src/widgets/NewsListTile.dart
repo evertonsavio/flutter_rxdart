@@ -27,14 +27,15 @@ class NewsLisTile extends StatelessWidget {
                   return const LoadingContainer();
                 }
 
-                return buildTitle(itemSnapshot.data!);
+                return buildTitle(context, itemSnapshot.data!);
               },
           );
         },
     );
   }
 
-  Widget buildTitle(ItemModel item) {
+  Widget buildTitle(BuildContext context, ItemModel item) {
+
     return Column(
       children: [
         ListTile(
@@ -46,6 +47,9 @@ class NewsLisTile extends StatelessWidget {
               Text('${item.descendants}'),
             ],
           ),
+          onTap: () {
+            Navigator.pushNamed(context, '/${item.id}');
+          },
         ),
         const Divider(height: 8.0)
       ],
