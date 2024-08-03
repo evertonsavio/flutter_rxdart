@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fetch/src/widgets/NewsListTile.dart';
 
 import '../blocs/StoriesProvider.dart';
 
@@ -29,7 +30,9 @@ class NewsList extends StatelessWidget {
         return ListView.builder(
           itemCount: snapshot.data?.length,
           itemBuilder: (BuildContext context, int index) {
-            return Text('${snapshot.data![index]}');
+            bloc.fetchItem(snapshot.data![index]);
+
+            return NewsLisTile(itemId: snapshot.data![index]);
           },
         );
       },

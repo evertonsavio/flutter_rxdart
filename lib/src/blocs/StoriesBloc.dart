@@ -6,25 +6,26 @@ import '../resources/Repository.dart';
 class StoriesBloc {
   final _repository = Repository();
   final _topIdsController = PublishSubject<List<int>>();
-  final _itemsOutputController = BehaviorSubject<int>();
-  late Stream<Map<int, Future<ItemModel?>>> itemsStream;
+  final _itemsFetcher = PublishSubject<int>();
+  final _itemsOutputController = BehaviorSubject<Map<int, Future<ItemModel?>>>();
 
+  // Constructor
   StoriesBloc() {
-    itemsStream = _itemsOutputController.stream.transform(_itemsTransformer());
+    _itemsFetcher.stream.transform(_itemsTransformer()).pipe(_itemsOutputController);
   }
 
-  //Streams
+  // Streams
   Stream<List<int>> get topIdsStream => _topIdsController.stream;
-  Stream<Map<int, Future<ItemModel?>>> get transformedItemsStream => itemsStream;
+  Stream<Map<int, Future<ItemModel?>>> get itemsStream => _itemsOutputController.stream;
 
   // Sinks
+  Function(int) get fetchItem => _itemsFetcher.sink.add;
   fetchTopIds() async {
     final ids = await _repository.fetchTopIds();
     _topIdsController.sink.add(ids);
   }
-  Function(int) get fetchItem => _itemsOutputController.sink.add;
 
-  //Transformers
+  // Transformers
   _itemsTransformer() {
     return ScanStreamTransformer(
         (Map<int, Future<ItemModel?>>cache, int id, index) {
@@ -34,10 +35,11 @@ class StoriesBloc {
         <int, Future<ItemModel?>>{},
     );
   }
-  
-  //Clean up
+
+  // Clean up
   dispose() {
     _topIdsController.close();
+    _itemsFetcher.close();
     _itemsOutputController.close();
   }
 }
