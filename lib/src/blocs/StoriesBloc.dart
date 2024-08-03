@@ -36,6 +36,10 @@ class StoriesBloc {
     );
   }
 
+  clearCache() {
+    return _repository.clearCache();
+  }
+
   // Clean up
   dispose() {
     _topIdsController.close();

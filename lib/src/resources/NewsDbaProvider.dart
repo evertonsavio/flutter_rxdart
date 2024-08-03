@@ -70,6 +70,11 @@ class NewsDbaProvider implements Source, Cache {
         conflictAlgorithm: ConflictAlgorithm.ignore,
     );
   }
+
+  @override
+  Future<int> clear() async {
+    return db.delete("Items");
+  }
 }
 
 final newsDbaProvider = NewsDbaProvider();
